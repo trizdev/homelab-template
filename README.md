@@ -1,11 +1,11 @@
 ```
         .·:*¨*:·.
      ┌─────────────┐
-     │  ◕   ‿   ◕  │   homelab
-     │ ▪▪▪▪▪▪▪▪▪▪▪ │   self-hosted · as code
-     │ ▪▪▪▪▪▪▪▪▪▪▪ │
+     │   ^  w  ^   │   homelab
+     │ [=========] │   self-hosted · as code
+     │ [=========] │
      └──┬───────┬──┘
-     ❀  ┴       ┴  ❀
+     *  ┴       ┴  *
 ```
 
 <h1 align="center">homelab-template</h1>
