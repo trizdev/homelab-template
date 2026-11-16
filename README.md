@@ -1,6 +1,14 @@
-<p align="center">
-.·:*¨*:·.
-</p>
+<div align="center">
+<pre>
+        .·:*¨*:·.
+     ┌─────────────┐
+     │  ◕   ‿   ◕  │   homelab
+     │ ▪▪▪▪▪▪▪▪▪▪▪ │   self-hosted · as code
+     │ ▪▪▪▪▪▪▪▪▪▪▪ │
+     └──┬───────┬──┘
+     ❀  ┴       ┴  ❀
+</pre>
+</div>
 
 <h1 align="center">homelab-template</h1>
 
