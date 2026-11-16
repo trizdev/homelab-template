@@ -1,5 +1,4 @@
-<div align="center">
-<pre>
+```
      .-~*~-.
  +-------------+
  |   o  w  o   |   homelab
@@ -7,8 +6,7 @@
  | [=========] |
  +--+-------+--+
  *  '       '  *
-</pre>
-</div>
+```
 
 <h1 align="center">homelab-template</h1>
 
