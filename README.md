@@ -1,4 +1,25 @@
-# homelab-template
+<p align="center">
+.·:*¨*:·.
+</p>
+
+<h1 align="center">homelab-template</h1>
+
+<p align="center">
+self-hosted linux, managed as code · no secrets, no open ports
+</p>
+
+<p align="center">
+<img src="https://img.shields.io/badge/ansible-C9A2A6?style=flat-square" alt="ansible" />
+<img src="https://img.shields.io/badge/docker-A3B18A?style=flat-square" alt="docker" />
+<img src="https://img.shields.io/badge/nginx-B8A9C9?style=flat-square" alt="nginx" />
+<img src="https://img.shields.io/badge/cloudflare-E9D8A6?style=flat-square" alt="cloudflare" />
+<img src="https://img.shields.io/badge/grafana-C9A2A6?style=flat-square" alt="grafana" />
+<img src="https://img.shields.io/badge/fail2ban-A3B18A?style=flat-square" alt="fail2ban" />
+</p>
+
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
 
 Sanitized template of a self-hosted Linux homelab managed as code.
 
@@ -6,7 +27,11 @@ This repository shows how the lab is built and operated: Ansible provisions the 
 
 It does **not** contain a live lab. Hostnames, addresses, and secrets here are placeholders (`example.com`, `192.168.1.x`). Copy the `.example` files, replace the values, and keep real data out of git.
 
-## Architecture
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### architecture
 
 ```mermaid
 flowchart LR
@@ -25,7 +50,11 @@ flowchart LR
 
 Access is outbound-only: `cloudflared` establishes a tunnel to Cloudflare. NGINX never binds a public port. Grafana, Prometheus, and Uptime Kuma are reachable only through the proxy (and only after Zero Trust policy allows the request).
 
-## Stack
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### stack
 
 - **Ansible** — host provisioning
 - **Docker Compose** — containerized services (Podman-compatible)
@@ -36,7 +65,11 @@ Access is outbound-only: `cloudflared` establishes a tunnel to Cloudflare. NGINX
 - **Fail2ban** — SSH brute-force protection
 - **UFW** — host firewall (allow SSH only; firewalld can be swapped in)
 
-## Repository layout
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### repository layout
 
 ```
 ansible/
@@ -58,7 +91,11 @@ compose/
   prometheus/prometheus.yml
 ```
 
-## Quick start
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### quick start
 
 The playbook targets Debian or Ubuntu. You need Ansible on your workstation, SSH access to the host, and Docker Compose (or Podman) on the host after the playbook runs.
 
@@ -108,7 +145,11 @@ ansible-galaxy collection install -r ansible/requirements.yml
 
    Point the Cloudflare Tunnel at the NGINX container (`http://nginx:80`) and add public hostnames such as `grafana.example.com`. No inbound firewall rules are required.
 
-## Security
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### security
 
 - **Secrets stay out of git.** `.env`, `inventory.ini`, `group_vars/all.yml`, `group_vars/vault.yml`, `*.vault`, `*.key`, and `*.pem` are gitignored. Only `.example` files are tracked.
 - **Ansible Vault** encrypts credentials at rest in the repo, if you choose to store them there at all.
@@ -118,12 +159,24 @@ ansible-galaxy collection install -r ansible/requirements.yml
 
 The example SSH key and `192.168.1.10` address are placeholders. The playbook refuses to disable password login if `admin_ssh_keys` is still the example value, so you cannot lock yourself out by running it unchanged.
 
-## Roadmap
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### roadmap
 
 - [ ] Automated backups (for example, restic) of Docker volumes
 - [ ] Local LLM with Ollama, reachable only on the internal network
 - [x] CI lint (`yamllint` + `ansible-lint`)
 
-## License
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
+
+#### license
 
 MIT © Ana Beatriz
+
+<p align="center">
+.·:*¨¨* ❀ *¨¨*:·.
+</p>
