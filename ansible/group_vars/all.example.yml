@@ -1,0 +1,27 @@
+---
+# Copy this file to all.yml and replace the placeholders.
+# all.yml is gitignored and must not be committed.
+# Encrypt secrets with: ansible-vault encrypt_string 'value' --name var_name
+
+timezone: UTC
+
+admin_user: admin
+# Replace the example key with your own public key before running the playbook.
+admin_ssh_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceThisWithYourOwn admin@example.com
+
+# Optional. Set a SHA-512 hash (mkpasswd --method=sha-512) via Ansible Vault
+# if you want a sudo password. Leave empty for a key-only account.
+admin_password_hash: ""
+
+# Headless, key-only hosts typically need this. Set to false if the user has a password.
+admin_sudo_nopasswd: true
+
+ssh_port: 22
+
+fail2ban_maxretry: 5
+fail2ban_bantime: 1h
+fail2ban_findtime: 10m
+
+docker_users:
+  - "{{ admin_user }}"

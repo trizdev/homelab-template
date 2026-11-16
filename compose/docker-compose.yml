@@ -1,0 +1,78 @@
+# Application ports are intentionally not published on the host.
+# cloudflared reaches NGINX on the internal network; NGINX proxies to the apps.
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    expose:
+      - "80"
+    depends_on:
+      - grafana
+      - prometheus
+      - uptime-kuma
+    networks:
+      - homelab
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    restart: unless-stopped
+    environment:
+      GF_SERVER_ROOT_URL: https://${GRAFANA_HOSTNAME:-grafana.example.com}
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-changeme}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    expose:
+      - "3000"
+    networks:
+      - homelab
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.external-url=https://${PROMETHEUS_HOSTNAME:-prometheus.example.com}
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    expose:
+      - "9090"
+    networks:
+      - homelab
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma-data:/app/data
+    expose:
+      - "3001"
+    networks:
+      - homelab
+
+  cloudflared:
+    image: cloudflare/cloudflared:2025.1.0
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - nginx
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    driver: bridge
+
+volumes:
+  grafana-data:
+  prometheus-data:
+  uptime-kuma-data:

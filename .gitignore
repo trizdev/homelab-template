@@ -1,0 +1,21 @@
+# Local secrets and inventories — never commit these
+.env
+inventory.ini
+*.vault
+ansible/group_vars/all.yml
+ansible/group_vars/vault.yml
+secrets/
+*.key
+*.pem
+
+# Ansible Vault password files and retry files
+.vault_pass
+.vault_password
+vault_pass.txt
+*.retry
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

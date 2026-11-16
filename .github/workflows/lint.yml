@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install linters
+        run: pip install --disable-pip-version-check yamllint ansible-lint ansible-core
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+
+      - name: Run yamllint
+        run: yamllint -c .yamllint.yml .
+
+      - name: Syntax-check the playbook
+        run: ansible-playbook --syntax-check -i ansible/inventory.example.ini ansible/site.yml
+
+      - name: Run ansible-lint
+        run: ansible-lint ansible/

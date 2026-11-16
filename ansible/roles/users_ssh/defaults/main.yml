@@ -1,0 +1,5 @@
+---
+users_ssh_admin_user: "{{ admin_user | default('admin') }}"
+users_ssh_admin_ssh_keys: "{{ admin_ssh_keys | default([]) }}"
+users_ssh_admin_password_hash: "{{ admin_password_hash | default('') }}"
+users_ssh_admin_sudo_nopasswd: "{{ admin_sudo_nopasswd | default(true) }}"

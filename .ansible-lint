@@ -1,0 +1,8 @@
+---
+profile: basic
+offline: true
+exclude_paths:
+  - compose/
+  - .github/
+skip_list:
+  - yaml[document-start]

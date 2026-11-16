@@ -1,0 +1,68 @@
+---
+- name: Assert a real SSH public key is configured
+  ansible.builtin.assert:
+    that:
+      - users_ssh_admin_ssh_keys | length > 0
+      - users_ssh_admin_ssh_keys | first is not search('ExampleKey')
+    fail_msg: >-
+      Set admin_ssh_keys in group_vars/all.yml to your real public key
+      before disabling password authentication.
+
+- name: Ensure the admin group exists
+  ansible.builtin.group:
+    name: "{{ users_ssh_admin_user }}"
+    state: present
+
+- name: Create the admin user
+  ansible.builtin.user:
+    name: "{{ users_ssh_admin_user }}"
+    group: "{{ users_ssh_admin_user }}"
+    groups: sudo
+    append: true
+    shell: /bin/bash
+    create_home: true
+    state: present
+
+- name: Set the admin password when a hash is provided
+  ansible.builtin.user:
+    name: "{{ users_ssh_admin_user }}"
+    password: "{{ users_ssh_admin_password_hash }}"
+  when: users_ssh_admin_password_hash | length > 0
+  no_log: true
+
+- name: Allow passwordless sudo for the admin user
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ users_ssh_admin_user }}"
+    content: "{{ users_ssh_admin_user }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: visudo -cf %s
+  when: users_ssh_admin_sudo_nopasswd | bool
+
+- name: Install authorized SSH keys
+  ansible.builtin.authorized_key:
+    user: "{{ users_ssh_admin_user }}"
+    key: "{{ item }}"
+    state: present
+    exclusive: false
+  loop: "{{ users_ssh_admin_ssh_keys }}"
+
+- name: Deploy sshd hardening drop-in
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/99-hardening.conf
+    content: |
+      PasswordAuthentication no
+      PermitRootLogin no
+      PubkeyAuthentication yes
+      KbdInteractiveAuthentication no
+      ChallengeResponseAuthentication no
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart sshd
+
+- name: Validate sshd configuration
+  ansible.builtin.command:
+    cmd: sshd -t
+  changed_when: false

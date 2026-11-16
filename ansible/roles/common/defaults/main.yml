@@ -1,0 +1,11 @@
+---
+common_timezone: "{{ timezone | default('UTC') }}"
+
+common_packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - htop
+  - vim
+  - unattended-upgrades
+  - apt-listchanges

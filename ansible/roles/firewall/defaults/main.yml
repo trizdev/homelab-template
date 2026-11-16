@@ -1,0 +1,2 @@
+---
+firewall_ssh_port: "{{ ssh_port | default(22) }}"
